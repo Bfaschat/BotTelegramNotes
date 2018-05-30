@@ -5,7 +5,8 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, User
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler
 from telegram.ext.filters import Filters
-import logging, sys, time, os
+import logging, sys, time, os, threading ,ComandosWindows
+import pyscreenshot as ImageGrab
 from ConexaoDB import Mongo_DB
 
 #Banco de dados
@@ -50,6 +51,14 @@ def stop(bot, update):
         msg = "I'm going... bye"
         bot.send_message(chat_id=update.message.chat_id, text=msg)
         print(msg)
+    except Exception as ex:
+        print(ex)
+
+#Envia uma foto pré-definida
+def take_screenshot(bot, update):
+    try:
+        bot.send_photo(chat_id=update.message.chat_id, photo=open('C:\\temp\\print.jpg', 'rb'))
+        print('Print enviado')
     except Exception as ex:
         print(ex)
 
@@ -187,6 +196,9 @@ dispatcher.add_handler(stop_handle)
 help_handle = CommandHandler('help', help)
 dispatcher.add_handler(help_handle)
 
+print_handle = CommandHandler('remote', take_screenshot)
+dispatcher.add_handler(print_handle)
+
 add_handle = CommandHandler('add', add, pass_args=True)
 dispatcher.add_handler(add_handle)
 
@@ -217,6 +229,3 @@ banco.altera_banco('DbPython', 'Teste')
 while(False != True):
     print("Aguardando um comando...")
     time.sleep(5)
-    
-
-#os.startfile('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe')
