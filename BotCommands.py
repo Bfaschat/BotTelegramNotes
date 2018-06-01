@@ -6,7 +6,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, User
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler
 from telegram.ext.filters import Filters
 import logging, sys, time, os, threading ,ComandosWindows
-import pyscreenshot as ImageGrab
+import pyscreenshot as ImageGrab, subprocess
 from ConexaoDB import Mongo_DB
 
 #Banco de dados
@@ -61,6 +61,11 @@ def take_screenshot(bot, update):
         print('Print enviado')
     except Exception as ex:
         print(ex)
+
+def tira_print(bot, update):
+    subprocess.call('C:\\Windows\\System32\\cmd.exe', 10, 'python C:\\GitHub\\BotTelegramnotes\\BotTelegramNotes\\ComandosWindows.py')
+    time.sleep(5)
+    bot.send_message(chat_id=update.message.chat_id, text="Print tirado")
 
 #Comandos disponíveis
 def help(bot, update):
@@ -122,6 +127,7 @@ def find(bot, update, args):
         bot.send_message(chat_id=update.message.chat_id, text=msg)
         print(msg)
 
+#Retorna todas as notas
 def all_notes(bot, update):
     try:
         notes = banco.all_notes()
@@ -138,6 +144,7 @@ def all_notes(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=msg)
         print(msg)
 
+#Deleta uma nota
 def delete_note(bot, update, args):
     try:
         titulo = ''
@@ -190,14 +197,17 @@ def unknown(bot, update):
 start_handle = CommandHandler('start', start)
 dispatcher.add_handler(start_handle)
 
+teste_handle = CommandHandler('teste', tira_print)
+dispatcher.add_handler(teste_handle)
+
 stop_handle = CommandHandler('stop', stop)
 dispatcher.add_handler(stop_handle)
 
 help_handle = CommandHandler('help', help)
 dispatcher.add_handler(help_handle)
 
-print_handle = CommandHandler('remote', take_screenshot)
-dispatcher.add_handler(print_handle)
+screenshot_handle = CommandHandler('remote', take_screenshot)
+dispatcher.add_handler(screenshot_handle)
 
 add_handle = CommandHandler('add', add, pass_args=True)
 dispatcher.add_handler(add_handle)
