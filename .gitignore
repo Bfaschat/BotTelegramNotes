@@ -1,0 +1,5 @@
+
+*.pyc
+__pycache__/ConexaoDB.cpython-36.pyc
+__pycache__/ComandosWindows.cpython-36.pyc
+BotCommands.py
