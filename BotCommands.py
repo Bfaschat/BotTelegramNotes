@@ -5,8 +5,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, User
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler
 from telegram.ext.filters import Filters
-import logging, sys, time, os, threading ,ComandosWindows
-import pyscreenshot as ImageGrab
+import logging, sys, time, os, threading ,ComandosWindows as CW, pyautogui
 from ConexaoDB import Mongo_DB
 
 #Banco de dados
@@ -54,10 +53,12 @@ def stop(bot, update):
     except Exception as ex:
         print(ex)
 
-#Envia uma foto pré-definida
+#Envia um print da tela
 def take_screenshot(bot, update):
     try:
-        bot.send_photo(chat_id=update.message.chat_id, photo=open('C:\\temp\\print.jpg', 'rb'))
+        CW.print_tela()
+
+        bot.send_photo(chat_id=update.message.chat_id, photo=open('C:\\temp\\print.png', 'rb'))
         print('Print enviado')
     except Exception as ex:
         print(ex)
@@ -196,7 +197,7 @@ dispatcher.add_handler(stop_handle)
 help_handle = CommandHandler('help', help)
 dispatcher.add_handler(help_handle)
 
-print_handle = CommandHandler('remote', take_screenshot)
+print_handle = CommandHandler('screenshot', take_screenshot)
 dispatcher.add_handler(print_handle)
 
 add_handle = CommandHandler('add', add, pass_args=True)

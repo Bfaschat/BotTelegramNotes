@@ -1,18 +1,15 @@
-import pyscreenshot as ImageGrab
-import os, time
+import pyautogui, os
 
-def screenShot():
-    '''
-    Tira um print da tela, e o salva na pasta temp.
-    '''
-    dir = 'C:\\temp\\'
-    if(os.path.exists(dir) == False):
-        os.mkdir(dir)
+def print_tela():
+    folder = 'C:\\temp\\'
+    arq = '{}print.png'.format(folder)
 
-    image = ImageGrab.grab()
-    image.save('{}print.jpg'.format(dir), 'jpeg')
-    print('Print tirado!')
+    if(os.path.exists(folder) == False):
+        os.mkdir(folder)
+    elif(os.path.exists(arq) == True):
+        os.remove(arq)
 
+    pic = pyautogui.screenshot()
 
-if __name__ == "__main__":
-    screenShot()
+    pic.save(arq)
+    pic.close()
